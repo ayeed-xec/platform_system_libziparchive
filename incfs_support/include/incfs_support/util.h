@@ -16,7 +16,8 @@
 
 #pragma once
 
-#ifdef __BIONIC__
+// incfs is a Linux kernel file system.
+#if defined(__BIONIC__) && defined(__linux__)
 #include <linux/incrementalfs.h>
 #include <sys/vfs.h>
 #endif
@@ -33,7 +34,7 @@ void clearAndFree(Container& c) {
 }
 
 bool isIncfsFd([[maybe_unused]] int fd) {
-#ifdef __BIONIC__
+#if defined(__BIONIC__) && defined(__linux__)
   struct statfs fs = {};
   if (::fstatfs(fd, &fs) != 0) {
     return false;
